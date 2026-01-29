@@ -416,9 +416,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
 
-      // Handle difficulty filter - special case for "All Levels"
+      // Handle difficulty filter - special case for "All"
       if (currentDifficulty === "") {
-        // "All Levels" means only show activities WITHOUT a difficulty field
+        // "All" means only show activities WITHOUT a difficulty field (for all levels)
         // This will be handled client-side in displayFilteredActivities
       } else if (currentDifficulty) {
         // Specific difficulty selected
@@ -470,7 +470,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
 
-      // Apply "All Levels" filter (only show activities without difficulty field)
+      // Apply "All" filter (only show activities without difficulty field - for all levels)
       if (currentDifficulty === "") {
         if (details.difficulty) {
           return; // Skip activities that have a difficulty field
