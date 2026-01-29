@@ -570,8 +570,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       </div>
       <div class="share-buttons">
-        <button class="share-button" data-activity="${name}" title="Share this activity">
-          <span class="share-icon">📤</span>
+        <button class="share-button" data-activity="${name}" title="Share this activity" aria-label="Share ${name}">
+          <span class="share-icon" aria-hidden="true">📤</span>
           <span>Share</span>
         </button>
       </div>
@@ -644,26 +644,29 @@ document.addEventListener("DOMContentLoaded", () => {
       shareModal = document.createElement("div");
       shareModal.id = "share-modal";
       shareModal.className = "modal hidden";
+      shareModal.setAttribute("role", "dialog");
+      shareModal.setAttribute("aria-modal", "true");
+      shareModal.setAttribute("aria-labelledby", "share-modal-title");
       shareModal.innerHTML = `
         <div class="modal-content share-modal-content">
-          <span class="close-share-modal">&times;</span>
-          <h3>Share Activity</h3>
+          <span class="close-share-modal" aria-label="Close share dialog">&times;</span>
+          <h3 id="share-modal-title">Share Activity</h3>
           <p id="share-activity-name"></p>
           <div class="share-options">
-            <button class="share-option-button" id="share-email" title="Share via Email">
-              <span class="share-option-icon">📧</span>
+            <button class="share-option-button" id="share-email" title="Share via Email" aria-label="Share via Email">
+              <span class="share-option-icon" aria-hidden="true">📧</span>
               <span>Email</span>
             </button>
-            <button class="share-option-button" id="share-copy" title="Copy link to clipboard">
-              <span class="share-option-icon">📋</span>
+            <button class="share-option-button" id="share-copy" title="Copy link to clipboard" aria-label="Copy link to clipboard">
+              <span class="share-option-icon" aria-hidden="true">📋</span>
               <span>Copy Link</span>
             </button>
-            <button class="share-option-button" id="share-facebook" title="Share on Facebook">
-              <span class="share-option-icon">📘</span>
+            <button class="share-option-button" id="share-facebook" title="Share on Facebook" aria-label="Share on Facebook">
+              <span class="share-option-icon" aria-hidden="true">📘</span>
               <span>Facebook</span>
             </button>
-            <button class="share-option-button" id="share-twitter" title="Share on Twitter">
-              <span class="share-option-icon">🐦</span>
+            <button class="share-option-button" id="share-twitter" title="Share on Twitter" aria-label="Share on Twitter">
+              <span class="share-option-icon" aria-hidden="true">🐦</span>
               <span>Twitter</span>
             </button>
           </div>
@@ -685,6 +688,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Update modal content
     document.getElementById("share-activity-name").textContent = activityName;
+
+    // Add keyboard listener for Escape key - attach to document for current modal instance
+    const handleEscape = (event) => {
+      if (event.key === "Escape") {
+        closeShareModal();
+        document.removeEventListener("keydown", handleEscape);
+      }
+    };
+    document.addEventListener("keydown", handleEscape);
 
     // Set up share option handlers
     const emailBtn = document.getElementById("share-email");
@@ -709,7 +721,12 @@ document.addEventListener("DOMContentLoaded", () => {
         `${activityName} - Mergington High School`
       );
       const body = encodeURIComponent(`${shareText}\n\n${shareUrl}`);
-      window.location.href = `mailto:?subject=${subject}&body=${body}`;
+      const mailtoUrl = `mailto:?subject=${subject}&body=${body}`;
+      
+      // Use a temporary anchor element to avoid navigating away from the page
+      const tempLink = document.createElement("a");
+      tempLink.href = mailtoUrl;
+      tempLink.click();
       closeShareModal();
     });
 
