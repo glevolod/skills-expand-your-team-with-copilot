@@ -37,6 +37,19 @@ These dependencies will be installed when you run `pip install -r src/requiremen
 - FastAPI's auto-reload feature will automatically restart the server when you make code changes
 - Use the interactive API documentation at `/docs` to test your endpoints
 
+## Features
+
+### Dark Mode
+
+The website includes a dark mode toggle button located in the top right corner of the header. Users can:
+
+- Click the moon icon (🌙) to switch to dark mode
+- Click the sun icon (☀️) to switch back to light mode
+- The selected theme preference is automatically saved in the browser's local storage
+- The saved preference is restored when the user returns to the website
+
+This feature is especially popular with students who prefer darker interfaces!
+
 ## Usage
 
 ### Running the application
